@@ -65,6 +65,6 @@
 
   homebrew = {
     enable = true;
-    casks = import ../dotfiles/casks;
+    inherit (builtins.fromTOML (builtins.readFile ../dotfiles/brew/packages.toml));
   };
 }

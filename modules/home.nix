@@ -10,6 +10,9 @@ let
       sha256 = "sha256-2HUSEK5s7WkBvbLw/u6RxS7fNA4q6iaNfdnyBqc7d68=";
     })
     { };
+
+    vscode-extensions = import ../dotfiles/vscode/extensions.nix { inherit pkgs; };
+    vscode-settings = builtins.fromJSON (builtins.readFile ../dotfiles/vscode/settings.json);
 in
 {
   home = {
@@ -57,6 +60,15 @@ in
   };
 
   programs = {
+
+    vscode = {
+      enable = true;
+      enableUpdateCheck = false;
+      enableExtensionUpdateCheck = false;
+      mutableExtensionsDir = false;
+      extensions = vscode-extensions;
+      userSettings = vscode-settings;
+    };
 
     alacritty = {
       enable = true;

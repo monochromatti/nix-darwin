@@ -23,6 +23,9 @@
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+    };
   };
 
 
@@ -48,6 +51,11 @@
               home-manager.useUserPackages = true;
               home-manager.users.monochromatti = import ./modules/home.nix;
             }
+            {
+              nixpkgs.overlays = [
+                inputs.nix-vscode-extensions.overlays.default
+              ];
+            }
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
@@ -65,5 +73,4 @@
         };
       };
     };
-
 }

@@ -1,0 +1,7 @@
+{
+    "extensions.autoCheckUpdates": false,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "update.mode": "none",
+    "workbench.colorTheme": "Atom One Dark Theme - Underlined"
+  }
