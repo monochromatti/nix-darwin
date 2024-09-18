@@ -11,12 +11,13 @@ let
     })
     { };
 
-    vscode-extensions = import ../dotfiles/vscode/extensions.nix { inherit pkgs; };
-    vscode-settings = builtins.fromJSON (builtins.readFile ../dotfiles/vscode/settings.json);
+  vscode-extensions = import ./dotfiles/vscode/extensions.nix { inherit pkgs; };
+  vscode-settings = builtins.fromJSON (builtins.readFile ./dotfiles/vscode/settings.json);
 in
 {
   home = {
 
+    username = "monochromatti";
     stateVersion = "24.05";
 
     packages = with pkgs; [
@@ -61,6 +62,8 @@ in
 
   programs = {
 
+    home-manager.enable = true;
+
     vscode = {
       enable = true;
       enableUpdateCheck = false;
@@ -73,7 +76,17 @@ in
     alacritty = {
       enable = true;
       settings = {
+        import = [ pkgs.alacritty-theme.afterglow ];
         shell.program = "zsh";
+        window = {
+          decorations = "Transparent";
+          blur = true;
+          padding = { x = 20; y = 40; };
+        };
+        font = {
+          normal = { family = "FiraCode Nerd Font"; };
+          size = 14;
+        };
       };
     };
 
@@ -85,7 +98,7 @@ in
       plugins = [
         {
           name = "powerlevel10k-config";
-          src = lib.cleanSource ../dotfiles;
+          src = lib.cleanSource ./dotfiles;
           file = "p10k.zsh";
         }
       ];
@@ -115,5 +128,8 @@ in
     dircolors.enable = true;
     fzf.enable = true;
   };
+
+
+
 
 }

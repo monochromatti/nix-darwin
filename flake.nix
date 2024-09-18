@@ -23,9 +23,8 @@
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
-    nix-vscode-extensions = {
-      url = "github:nix-community/nix-vscode-extensions";
-    };
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
   };
 
 
@@ -38,37 +37,63 @@
     , homebrew-cask
     , homebrew-bundle
     , ...
-    }: {
+    }:
+    let
+      system = "aarch64-darwin";
+      declarativeHome = {
+        config = {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        };
+      };
+      overlayModule = {
+        nixpkgs.overlays = [
+          inputs.nix-vscode-extensions.overlays.default
+          inputs.alacritty-theme.overlays.default
+        ];
+      };
+      homebrewModule = {
+        nix-homebrew = {
+          enable = true;
+          enableRosetta = true;
+          user = "monochromatti";
+          taps = {
+            "homebrew/homebrew-cask" = homebrew-cask;
+            "homebrew/homebrew-bundle" = homebrew-bundle;
+          };
+          mutableTaps = false;
+        };
+      };
+      users-monochromatti = ./users/monochromatti;
+      system-macarius = ./system;
+
+      users = {
+        monochromatti = {
+          description = "Mattias Matthiesen";
+          home = "/Users/monochromatti";
+        };
+      };
+    in
+    {
       darwinConfigurations = {
-        "monochromatti-mbp" = nix-darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          specialArgs = { inherit inputs; };
+        macarius = nix-darwin.lib.darwinSystem {
+
+          specialArgs = {
+            inherit inputs users;
+          };
           modules = [
-            ./modules/system.nix
+            system-macarius
+
+            # Home manager
             home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.monochromatti = import ./modules/home.nix;
-            }
-            {
-              nixpkgs.overlays = [
-                inputs.nix-vscode-extensions.overlays.default
-              ];
-            }
+            declarativeHome
+            users-monochromatti
+
+            # Nix homebrew
             nix-homebrew.darwinModules.nix-homebrew
-            {
-              nix-homebrew = {
-                enable = true;
-                enableRosetta = true;
-                user = "monochromatti";
-                taps = {
-                  "homebrew/homebrew-cask" = homebrew-cask;
-                  "homebrew/homebrew-bundle" = homebrew-bundle;
-                };
-                mutableTaps = false;
-              };
-            }
+            homebrewModule
+
+            overlayModule
           ];
         };
       };

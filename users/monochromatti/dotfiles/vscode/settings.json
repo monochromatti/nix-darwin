@@ -1,0 +1,10 @@
+{
+  "update.mode": "none",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "workbench.colorTheme": "Atom One Dark Theme - Underlined",
+  "latex-workshop.latex.external.build.command": "arara",
+  "latex-workshop.latex.external.build.args": [
+    "%DOC%", "--verbose"
+  ]
+}
