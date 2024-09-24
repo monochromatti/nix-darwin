@@ -2,15 +2,6 @@
 let
   latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
   python = pkgs.python312.withPackages (ps: with ps; [ numpy scipy polars ]);
-  tex-fmt = pkgs.callPackage
-    (pkgs.fetchFromGitHub {
-      owner = "wgunderwood";
-      repo = "tex-fmt";
-      rev = "master";
-      sha256 = "sha256-2HUSEK5s7WkBvbLw/u6RxS7fNA4q6iaNfdnyBqc7d68=";
-    })
-    { };
-
   vscode-extensions = import ./dotfiles/vscode/extensions.nix { inherit pkgs; };
   vscode-settings = builtins.fromJSON (builtins.readFile ./dotfiles/vscode/settings.json);
 in
@@ -52,9 +43,9 @@ in
       pandoc
       quarto
       latex
-      tex-fmt
 
       # Utils
+      age
       syncthing
       soundsource
     ];
@@ -63,6 +54,22 @@ in
   programs = {
 
     home-manager.enable = true;
+
+    ssh = {
+      knownHosts = {
+        nixbuild = {
+          hostNames = [ "eu.nixbuild.net" ];
+          publicKey = builtins.readFile "${config.home.homeDirectory}/.config/nix-secrets/keys/nixbuild-key.pub";
+        };
+      };
+      extraConfig = ''
+        Host eu.nixbuild.net
+          PubkeyAcceptedKeyTypes ssh-ed25519
+          ServerAliveInterval 60
+          IPQoS throughput
+          IdentityFile ${config.home.homeDirectory}/.config/nix-secrets/keys
+      '';
+    };
 
     vscode = {
       enable = true;
@@ -128,6 +135,14 @@ in
     dircolors.enable = true;
     fzf.enable = true;
   };
+
+  # local = {
+  #   dock.enable = true;
+  #   dock.entries = [
+  #     { path = "${pkgs.alacritty}/Applications/Alacritty.app/"; }
+  #     { path = "/System/Applications/Home.app/"; }
+  #   ];
+  # };
 
 
 

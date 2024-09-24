@@ -25,6 +25,10 @@
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
 
@@ -36,6 +40,7 @@
     , nix-homebrew
     , homebrew-cask
     , homebrew-bundle
+    , sops-nix
     , ...
     }:
     let
@@ -83,6 +88,9 @@
           };
           modules = [
             system-macarius
+
+            # Sops
+            # sops-nix.nixosModules.sops
 
             # Home manager
             home-manager.darwinModules.home-manager
