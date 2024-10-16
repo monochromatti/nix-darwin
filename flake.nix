@@ -2,18 +2,19 @@
   description = "nix-darwin configuration for monochromatti";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
     };
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
@@ -24,23 +25,24 @@
       flake = false;
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
-
 
   outputs =
     inputs@{ self
     , nixpkgs
-    , nix-darwin
     , home-manager
+    , nix-darwin
     , nix-homebrew
+    , homebrew-core
     , homebrew-cask
     , homebrew-bundle
     , sops-nix
+    , mac-app-util
     , ...
     }:
     let
@@ -54,20 +56,7 @@
       overlayModule = {
         nixpkgs.overlays = [
           inputs.nix-vscode-extensions.overlays.default
-          inputs.alacritty-theme.overlays.default
         ];
-      };
-      homebrewModule = {
-        nix-homebrew = {
-          enable = true;
-          enableRosetta = true;
-          user = "monochromatti";
-          taps = {
-            "homebrew/homebrew-cask" = homebrew-cask;
-            "homebrew/homebrew-bundle" = homebrew-bundle;
-          };
-          mutableTaps = false;
-        };
       };
       users-monochromatti = ./users/monochromatti;
       system-macarius = ./system;
@@ -76,6 +65,20 @@
         monochromatti = {
           description = "Mattias Matthiesen";
           home = "/Users/monochromatti";
+        };
+      };
+
+      homebrewConfig = { ... }: {
+        nix-homebrew = {
+          enable = true;
+          enableRosetta = true;
+          user = "monochromatti";
+          taps = {
+            "homebrew/homebrew-core" = homebrew-core;
+            "homebrew/homebrew-cask" = homebrew-cask;
+            "homebrew/bundle" = homebrew-bundle;
+          };
+          mutableTaps = false;
         };
       };
     in
@@ -88,20 +91,13 @@
           };
           modules = [
             system-macarius
-
-            # Sops
-            # sops-nix.nixosModules.sops
-
-            # Home manager
             home-manager.darwinModules.home-manager
+            nix-homebrew.darwinModules.nix-homebrew
+            homebrewConfig
             declarativeHome
             users-monochromatti
-
-            # Nix homebrew
-            nix-homebrew.darwinModules.nix-homebrew
-            homebrewModule
-
             overlayModule
+            mac-app-util.darwinModules.default
           ];
         };
       };

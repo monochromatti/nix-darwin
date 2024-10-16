@@ -1,7 +1,12 @@
-{ pkgs, users, ... }:
-
+{ pkgs, config, users, ... }:
+let
+  brew = import ./dotfiles/brew.nix;
+  main-user = "monochromatti";
+in
 {
-  system.stateVersion = 5;
+  system = {
+    stateVersion = 5;
+  };
 
   users = { inherit users; };
 
@@ -21,9 +26,10 @@
 
     # System UI
     yabai
+
+    # Terminal
+    iterm2
   ];
-
-
 
   services = {
     nix-daemon.enable = true;
@@ -41,7 +47,7 @@
         window_border_width = 2;
         window_border_radius = 3;
         active_window_border_topmost = "off";
-        window_topmost = "on";
+        window_topmost = "off";
         window_shadow = "float";
         active_window_border_color = "0xff5c7e81";
         normal_window_border_color = "0xff505050";
@@ -74,18 +80,20 @@
     gc.automatic = true;
     optimise.automatic = true;
     settings = {
-      auto-optimise-store = true;
+      auto-optimise-store = false;
       experimental-features = [ "nix-command" "flakes" ];
     };
   };
 
-  programs = {
-    zsh.enable = true;
-  };
-
   homebrew = {
     enable = true;
-    inherit (builtins.fromTOML (builtins.readFile ./dotfiles/brew/packages.toml));
+    casks = brew.casks;
+    masApps = brew.masApps;
+    onActivation.cleanup = "zap";
+  };
+
+  programs = {
+    zsh.enable = true;
   };
 
   fonts.packages = with pkgs; [
@@ -95,3 +103,8 @@
     nerdfonts
   ];
 }
+
+
+# sudo rm -rf /nix/store/.links
+# sudo launchctl stop org.nixos.nix-daemon
+# sudo launchctl start org.nixos.nix-daemon

@@ -12,13 +12,9 @@ in
     stateVersion = "24.05";
 
     packages = with pkgs; [
-
       # Terminal
       tree
       lazygit
-
-      # Database
-      postgresql_15
 
       # Nix dev
       nixfmt-rfc-style # Formatter
@@ -48,28 +44,23 @@ in
       age
       syncthing
       soundsource
+      keka
+
+      # Media
+      vlc-bin
+      transmission_4
+
+      # Comms
+      zoom-us
+
+      # Productivity
+      raycast
     ];
   };
 
   programs = {
 
     home-manager.enable = true;
-
-    ssh = {
-      knownHosts = {
-        nixbuild = {
-          hostNames = [ "eu.nixbuild.net" ];
-          publicKey = builtins.readFile "${config.home.homeDirectory}/.config/nix-secrets/keys/nixbuild-key.pub";
-        };
-      };
-      extraConfig = ''
-        Host eu.nixbuild.net
-          PubkeyAcceptedKeyTypes ssh-ed25519
-          ServerAliveInterval 60
-          IPQoS throughput
-          IdentityFile ${config.home.homeDirectory}/.config/nix-secrets/keys
-      '';
-    };
 
     vscode = {
       enable = true;
@@ -78,23 +69,6 @@ in
       mutableExtensionsDir = false;
       extensions = vscode-extensions;
       userSettings = vscode-settings;
-    };
-
-    alacritty = {
-      enable = true;
-      settings = {
-        import = [ pkgs.alacritty-theme.afterglow ];
-        shell.program = "zsh";
-        window = {
-          decorations = "Transparent";
-          blur = true;
-          padding = { x = 20; y = 40; };
-        };
-        font = {
-          normal = { family = "FiraCode Nerd Font"; };
-          size = 14;
-        };
-      };
     };
 
     zsh = {
@@ -135,16 +109,4 @@ in
     dircolors.enable = true;
     fzf.enable = true;
   };
-
-  # local = {
-  #   dock.enable = true;
-  #   dock.entries = [
-  #     { path = "${pkgs.alacritty}/Applications/Alacritty.app/"; }
-  #     { path = "/System/Applications/Home.app/"; }
-  #   ];
-  # };
-
-
-
-
 }
