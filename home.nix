@@ -21,15 +21,6 @@ in
       nixpkgs-fmt # Formatter
       nil # Language server
 
-      # Rust
-      cargo
-
-      # Python
-      python
-      ruff
-      ruff-lsp
-      uv
-
       # Dev
       gh
       git
@@ -52,9 +43,6 @@ in
 
       # Comms
       zoom-us
-
-      # Productivity
-      raycast
     ];
   };
 

@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,12 +30,12 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
   outputs =
     inputs@{ self
     , nixpkgs
+    , nixpkgs-unstable
     , home-manager
     , nix-darwin
     , nix-homebrew
@@ -42,32 +43,32 @@
     , homebrew-cask
     , homebrew-bundle
     , sops-nix
-    , mac-app-util
     , ...
     }:
     let
       system = "aarch64-darwin";
-      declarativeHome = {
-        config = {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-        };
-      };
-      overlayModule = {
-        nixpkgs.overlays = [
-          inputs.nix-vscode-extensions.overlays.default
-        ];
-      };
-      users-monochromatti = ./users/monochromatti;
-      system-macarius = ./system;
-
+      unstable = import nixpkgs-unstable { inherit system; };
       users = {
         monochromatti = {
           description = "Mattias Matthiesen";
           home = "/Users/monochromatti";
         };
       };
-
+      declarativeHome = {
+        config = {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users."monochromatti" = ./home.nix;
+        };
+      };
+      overlayModule = {
+        nixpkgs.overlays = [
+          inputs.nix-vscode-extensions.overlays.default
+          (final: prev: {
+            uv = unstable.pkgs.uv;
+          })
+        ];
+      };
       homebrewConfig = { ... }: {
         nix-homebrew = {
           enable = true;
@@ -79,6 +80,7 @@
             "homebrew/bundle" = homebrew-bundle;
           };
           mutableTaps = false;
+          autoMigrate = true;
         };
       };
     in
@@ -90,14 +92,12 @@
             inherit inputs users;
           };
           modules = [
-            system-macarius
+            ./darwin.nix
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew
             homebrewConfig
             declarativeHome
-            users-monochromatti
             overlayModule
-            mac-app-util.darwinModules.default
           ];
         };
       };

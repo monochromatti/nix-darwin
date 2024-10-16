@@ -16,19 +16,14 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    # Rust
-    cargo
-
-    # Python
-    python312
-    uv
-    ruff
-
     # System UI
     yabai
 
     # Terminal
     iterm2
+
+    # Productivity
+    raycast
   ];
 
   services = {
@@ -103,8 +98,3 @@ in
     nerdfonts
   ];
 }
-
-
-# sudo rm -rf /nix/store/.links
-# sudo launchctl stop org.nixos.nix-daemon
-# sudo launchctl start org.nixos.nix-daemon
