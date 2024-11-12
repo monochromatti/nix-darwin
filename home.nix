@@ -24,7 +24,9 @@ in
       # Dev
       gh
       git
+      uv
       azure-cli
+      docker
 
       # Docs
       pandoc
@@ -33,17 +35,13 @@ in
 
       # Utils
       age
-      syncthing
-      soundsource
-      keka
-
-      # Media
-      vlc-bin
-      transmission_4
-
-      # Comms
-      zoom-us
     ];
+  };
+
+  services = {
+    syncthing = {
+      enable = true;
+    };
   };
 
   programs = {
@@ -96,5 +94,6 @@ in
 
     dircolors.enable = true;
     fzf.enable = true;
+
   };
 }

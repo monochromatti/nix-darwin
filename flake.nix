@@ -1,5 +1,5 @@
 {
-  description = "nix-darwin configuration for monochromatti";
+  description = "Nix-darwin configuration for macarius/monochromatti";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
@@ -26,10 +26,7 @@
       flake = false;
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    agenix.url = "github:ryantm/agenix";
   };
 
   outputs =
@@ -42,7 +39,7 @@
     , homebrew-core
     , homebrew-cask
     , homebrew-bundle
-    , sops-nix
+    , agenix
     , ...
     }:
     let
@@ -64,12 +61,10 @@
       overlayModule = {
         nixpkgs.overlays = [
           inputs.nix-vscode-extensions.overlays.default
-          (final: prev: {
-            uv = unstable.pkgs.uv;
-          })
+          (final: prev: { uv = unstable.pkgs.uv; }) # Most recent `uv`
         ];
       };
-      homebrewConfig = { ... }: {
+      nixHomebrew = { ... }: {
         nix-homebrew = {
           enable = true;
           enableRosetta = true;
@@ -87,7 +82,6 @@
     {
       darwinConfigurations = {
         macarius = nix-darwin.lib.darwinSystem {
-
           specialArgs = {
             inherit inputs users;
           };
@@ -95,7 +89,7 @@
             ./darwin.nix
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew
-            homebrewConfig
+            nixHomebrew
             declarativeHome
             overlayModule
           ];

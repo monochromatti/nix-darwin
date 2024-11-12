@@ -12,4 +12,7 @@ with (pkgs.forVSCodeVersion pkgs.vscode.version).vscode-marketplace; [
   james-yu.latex-workshop
   tecosaur.latex-utilities
   github.copilot
+  ms-pyright.pyright
+  ms-vscode-remote.remote-containers
+  quarto.quarto
 ]

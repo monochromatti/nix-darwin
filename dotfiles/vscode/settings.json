@@ -8,5 +8,6 @@
   "latex-workshop.latex.external.build.args": [
     "%DOC%", "--verbose"
   ],
-  "latex-workshop.latex.autoBuild.run": "never"
+  "latex-workshop.latex.autoBuild.run": "never",
+  "github.copilot.enable": {"*": true}
 }
