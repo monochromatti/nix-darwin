@@ -70,6 +70,7 @@ in
       "zotero"
       "affinity-designer"
       "affinity-photo"
+      "affinity-publisher"
       "spotify"
       "obsidian"
       "raycast"
