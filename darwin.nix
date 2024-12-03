@@ -83,6 +83,7 @@ in
       "mullvadvpn"
       "docker"
       "visual-studio-code"
+      "coteditor"
     ];
     masApps = {
       "Pixelmator Pro" = 1289583905;
