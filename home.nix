@@ -2,8 +2,6 @@
 let
   latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
   python = pkgs.python312.withPackages (ps: with ps; [ numpy scipy polars ]);
-  vscode-extensions = import ./dotfiles/vscode/extensions.nix { inherit pkgs; };
-  vscode-settings = builtins.fromJSON (builtins.readFile ./dotfiles/vscode/settings.json);
 in
 {
   home = {
@@ -47,15 +45,6 @@ in
   programs = {
 
     home-manager.enable = true;
-
-    vscode = {
-      enable = true;
-      enableUpdateCheck = false;
-      enableExtensionUpdateCheck = false;
-      mutableExtensionsDir = false;
-      extensions = vscode-extensions;
-      userSettings = vscode-settings;
-    };
 
     zsh = {
       enable = true;

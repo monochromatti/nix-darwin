@@ -25,7 +25,6 @@
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     agenix.url = "github:ryantm/agenix";
   };
 
@@ -60,7 +59,6 @@
       };
       overlayModule = {
         nixpkgs.overlays = [
-          inputs.nix-vscode-extensions.overlays.default
           (final: prev: { uv = unstable.pkgs.uv; }) # Most recent `uv`
         ];
       };
