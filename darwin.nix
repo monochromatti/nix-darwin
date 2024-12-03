@@ -81,6 +81,7 @@ in
       "soundsource"
       "mullvadvpn"
       "docker"
+      "visual-studio-code"
     ];
     masApps = {
       "Pixelmator Pro" = 1289583905;
