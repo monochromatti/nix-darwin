@@ -84,6 +84,7 @@ in
       "docker"
       "visual-studio-code"
       "coteditor"
+      "ghostty"
     ];
     masApps = {
       "Pixelmator Pro" = 1289583905;
