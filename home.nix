@@ -13,6 +13,7 @@ in
       # Terminal
       tree
       lazygit
+      helix
 
       # Nix dev
       nixfmt-rfc-style # Formatter
