@@ -17,8 +17,8 @@ in
       tree
       lazygit
       helix # Text editor
-      yazi # File explorer TUI
       silicon # Create images of your code
+      yazi # File explorer
 
       # Nix dev
       nixfmt-rfc-style # Formatter
@@ -77,6 +77,16 @@ in
       };
       envExtra = ''
         zstyle ':autocomplete:*' list-lines 5
+      '';
+      initExtra = ''
+        function y() {
+           	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+           	yazi "$@" --cwd-file="$tmp"
+           	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          		builtin cd -- "$cwd"
+           	fi
+           	rm -f -- "$tmp"
+                }
       '';
     };
 
@@ -162,6 +172,10 @@ in
             };
           };
           tinymist = {
+            binary = {
+              path = lib.getExe pkgs.tinymist;
+              path_lookup = true;
+            };
             initialization_options = {
               exportPdf = "onSave";
               outputPath = "$root/$name";
@@ -212,9 +226,6 @@ in
           light = "One Light";
           dark = "One Dark";
         };
-        show_whitespaces = "all";
-        # ui_font_size = 16;
-        # buffer_font_size = 16;
       };
 
     };
