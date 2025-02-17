@@ -1,6 +1,6 @@
 {
   pkgs,
-  lib,
+  upkgs,
   ...
 }:
 let
@@ -58,7 +58,7 @@ in
       plugins = [
         {
           name = "powerlevel10k-config";
-          src = lib.cleanSource ./dotfiles;
+          src = pkgs.lib.cleanSource ./dotfiles;
           file = "p10k.zsh";
         }
       ];
@@ -103,6 +103,7 @@ in
 
     zed-editor = {
       enable = true;
+      package = upkgs.zed-editor;
       extensions = [
         "nix"
         "toml"
@@ -121,8 +122,8 @@ in
         };
 
         node = {
-          path = lib.getExe pkgs.nodejs;
-          npm_path = lib.getExe' pkgs.nodejs "npm";
+          path = pkgs.lib.getExe pkgs.nodejs;
+          npm_path = pkgs.lib.getExe' pkgs.nodejs "npm";
         };
 
         hour_format = "hour24";
@@ -162,7 +163,7 @@ in
         lsp = {
           rust-analyzer = {
             binary = {
-              path = lib.getExe pkgs.rust-analyzer;
+              path = pkgs.lib.getExe pkgs.rust-analyzer;
               path_lookup = true;
             };
           };
@@ -173,7 +174,7 @@ in
           };
           tinymist = {
             binary = {
-              path = lib.getExe pkgs.tinymist;
+              path = pkgs.lib.getExe pkgs.tinymist;
               path_lookup = true;
             };
             initialization_options = {

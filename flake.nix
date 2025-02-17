@@ -5,6 +5,9 @@
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     };
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +40,7 @@
     inputs@{
       self,
       nixpkgs,
+      nixpkgs-unstable,
       home-manager,
       nix-darwin,
       nix-homebrew,
@@ -54,6 +58,9 @@
           home = "/Users/monochromatti";
         };
       };
+      upkgs = import nixpkgs-unstable {
+        inherit system;
+      };
     in
     {
       darwinConfigurations = {
@@ -69,7 +76,8 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."monochromatti" = import ./home.nix;
+              home-manager.users."monochromatti" =
+                { config, pkgs, ... }: import ./home.nix { inherit config pkgs upkgs; };
             }
           ];
         };
