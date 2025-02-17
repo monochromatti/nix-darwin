@@ -31,9 +31,6 @@
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
-    agenix = {
-      url = "github:ryantm/agenix";
-    };
   };
 
   outputs =
@@ -47,7 +44,6 @@
       homebrew-core,
       homebrew-cask,
       homebrew-bundle,
-      agenix,
       ...
     }:
     let
