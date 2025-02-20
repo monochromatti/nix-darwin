@@ -20,29 +20,26 @@ in
       silicon # Create images of your code
       yazi # File explorer
 
-      # Nix dev
+      # Nix
       nixfmt-rfc-style # Formatter
       nixpkgs-fmt # Formatter
       nixd # Language server
 
-      # Rust dev
+      # Rust
       rust-analyzer
       cargo
+
+      # Python
+      uv
 
       # Dev
       gh
       git
-      uv
-      azure-cli
-      docker
 
       # Docs
       pandoc
       quarto
       latex
-
-      # Utils
-      age
     ];
   };
 
