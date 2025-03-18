@@ -115,7 +115,7 @@ in
           version = "2";
           default_model = {
             provider = "zed.dev";
-            model = "claude-3-5-sonnet-latest";
+            model = "claude-3-7-sonnet-latest";
           };
         };
 
@@ -127,10 +127,6 @@ in
         hour_format = "hour24";
         auto_update = false;
         terminal = {
-          alternate_scroll = "off";
-          blinking = "off";
-          copy_on_select = false;
-          dock = "bottom";
           detect_venv = {
             on = {
               directories = [
@@ -145,16 +141,7 @@ in
           env = {
             TERM = "ghostty";
           };
-          font_family = "FiraCode Nerd Font";
-          font_features = null;
-          font_size = null;
-          line_height = "comfortable";
-          option_as_meta = false;
-          button = false;
           shell = "system";
-          toolbar = {
-            title = true;
-          };
           working_directory = "current_project_directory";
         };
 
