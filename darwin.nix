@@ -64,6 +64,7 @@
       "coteditor"
       "ghostty"
       "loop"
+      "orbstack"
     ];
     masApps = {
       "Pixelmator Pro" = 1289583905;
