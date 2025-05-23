@@ -75,7 +75,7 @@ in
       envExtra = ''
         zstyle ':autocomplete:*' list-lines 5
       '';
-      initExtra = ''
+      initContent = ''
         function y() {
            	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
            	yazi "$@" --cwd-file="$tmp"

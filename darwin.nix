@@ -5,8 +5,11 @@
 }:
 {
   system = {
+    primaryUser = "monochromatti";
     stateVersion = 5;
   };
+
+  ids.gids.nixbld = 30000;
 
   users = { inherit users; };
 
@@ -19,15 +22,8 @@
     mas # Mac App Store CLI
   ];
 
-  services = {
-    nix-daemon.enable = true;
-  };
-
-  security = {
-    pam.enableSudoTouchIdAuth = true;
-  };
-
   nix = {
+    enable = true;
     package = pkgs.nix;
     gc.automatic = true;
     optimise.automatic = true;
@@ -64,7 +60,6 @@
       "coteditor"
       "ghostty"
       "loop"
-      "orbstack"
     ];
     masApps = {
       "Pixelmator Pro" = 1289583905;
@@ -80,6 +75,6 @@
     dejavu_fonts
     jetbrains-mono
     noto-fonts
-    nerdfonts
+    nerd-fonts.droid-sans-mono
   ];
 }
