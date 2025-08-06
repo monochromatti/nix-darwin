@@ -112,13 +112,10 @@ in
       userSettings = {
         assistant = {
           enabled = true;
-          version = "2";
-          default_model = {
-            provider = "zed.dev";
-            model = "claude-3-7-sonnet-latest";
-          };
         };
-
+        file_types = {
+          "Markdown" = [ "qmd" ];
+        };
         node = {
           path = pkgs.lib.getExe pkgs.nodejs;
           npm_path = pkgs.lib.getExe' pkgs.nodejs "npm";
