@@ -55,7 +55,6 @@
       "keka"
       "soundsource"
       "mullvadvpn"
-      "docker"
       "visual-studio-code"
       "coteditor"
       "ghostty"

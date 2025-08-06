@@ -35,6 +35,7 @@ in
       # Dev
       gh
       git
+      docker
 
       # Docs
       pandoc
