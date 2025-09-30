@@ -32,6 +32,9 @@ in
       # Python
       uv
 
+      # Graphics
+      d2
+
       # Dev
       gh
       git
