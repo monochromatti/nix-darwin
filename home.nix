@@ -39,6 +39,7 @@ in
       gh
       git
       docker
+      azure-cli
 
       # Docs
       pandoc
