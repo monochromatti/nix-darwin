@@ -31,6 +31,7 @@ in
 
       # Python
       uv
+      ruff
 
       # Graphics
       d2
