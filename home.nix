@@ -113,6 +113,7 @@ in
         "json"
         "ruff"
         "typst"
+        "pyrefly"
       ];
       userSettings = {
         assistant = {
@@ -169,6 +170,12 @@ in
               outputPath = "$root/$name";
             };
           };
+          pyrefly = {
+            binary = {
+              path = pkgs.lib.getExe upkgs.pyrefly;
+              arguments = [ "lsp" ];
+            };
+          };
         };
 
         languages = {
@@ -187,7 +194,8 @@ in
               };
             };
             language_servers = [
-              "pyright"
+              "pyrefly"
+              "!pyright"
               "ruff"
             ];
             formatter = [
