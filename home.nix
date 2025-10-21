@@ -41,6 +41,7 @@ in
       git
       docker
       azure-cli
+      qemu
 
       # Docs
       pandoc
