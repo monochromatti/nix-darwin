@@ -3,6 +3,7 @@
   upkgs,
   ...
 }:
+with pkgs.lib;
 let
   latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
 in
@@ -105,127 +106,88 @@ in
       nix-direnv.enable = true;
       silent = true;
     };
-
     zed-editor = {
       enable = true;
       package = upkgs.zed-editor;
       extensions = [
         "nix"
         "toml"
-        "json"
-        "ruff"
-        "typst"
-        "pyrefly"
+        "mermaid"
+        "basher"
+        "log"
+        "html"
+        "sql"
+        "just"
+        "rainbow-csv"
+        "terraform"
       ];
       userSettings = {
-        assistant = {
-          enabled = true;
-        };
         file_types = {
           "Markdown" = [ "qmd" ];
+          "JSON" = [
+            "json"
+            "avsc"
+          ];
         };
+        load_direnv = "shell_hook";
+        edit_predictions = {
+          mode = "subtle";
+        };
+        vim_mode = true;
         node = {
-          path = pkgs.lib.getExe pkgs.nodejs;
-          npm_path = pkgs.lib.getExe' pkgs.nodejs "npm";
+          path = getExe pkgs.nodejs;
+          npm_path = getExe' pkgs.nodejs "npm";
         };
-
-        hour_format = "hour24";
-        auto_update = false;
-        terminal = {
-          detect_venv = {
-            on = {
-              directories = [
-                ".env"
-                "env"
-                ".venv"
-                "venv"
-              ];
-              activate_script = "default";
-            };
-          };
-          env = {
-            TERM = "ghostty";
-          };
-          shell = "system";
-          working_directory = "current_project_directory";
-        };
-
         lsp = {
-          rust-analyzer = {
+          ruff = {
             binary = {
-              path = pkgs.lib.getExe pkgs.rust-analyzer;
-              path_lookup = true;
+              path = getExe pkgs.ruff;
+              arguments = [ "server" ];
             };
+            formatter.command = [ "ruff format" ];
+            initialization_options.settings.configuration = "ruff.toml";
           };
-          nix = {
-            binary = {
-              path_lookup = true;
-            };
+          nixd = {
+            binary.path = getExe pkgs.nixd;
+            formatter.command = "nixfmt";
           };
-          tinymist = {
-            binary = {
-              path = pkgs.lib.getExe pkgs.tinymist;
-              path_lookup = true;
-            };
-            initialization_options = {
-              exportPdf = "onSave";
-              outputPath = "$root/$name";
-            };
+          package-version-server = {
+            binary.path = "package-version-server";
           };
-          pyrefly = {
+          ty = {
             binary = {
-              path = pkgs.lib.getExe upkgs.pyrefly;
-              arguments = [ "lsp" ];
+              path = getExe upkgs.ty;
+              arguments = [ "server" ];
             };
           };
         };
-
         languages = {
           Python = {
-            format_on_save = {
-              external = {
-                command = "ruff";
-                arguments = [
-                  "check"
-                  "--exit-zero"
-                  "--fix"
-                  "--stdin-filename"
-                  "{buffer_path}"
-                  "-"
-                ];
-              };
+            format_on_save = "on";
+            code_actions_on_format = {
+              "source.fixAll.ruff" = true;
             };
             language_servers = [
-              "pyrefly"
-              "!pyright"
               "ruff"
-            ];
-            formatter = [
-              {
-                language_server = {
-                  name = "ruff";
-                };
-              }
+              "ty"
+              "!basedpyright"
             ];
           };
           Nix = {
-            language_servers = [ "nixd" ];
+            formatter.external.command = "nixfmt";
+            language_servers = [
+              "nixd"
+              "!nil"
+            ];
           };
           Markdown = {
             soft_wrap = "editor_width";
           };
-        };
-
-        vim_mode = true;
-        load_direnv = "shell_hook";
-        base_keymap = "VSCode";
-        theme = {
-          mode = "system";
-          light = "One Light";
-          dark = "One Dark";
+          TOML = {
+            tab_size = 2;
+          };
         };
       };
-
     };
 
     dircolors.enable = true;
