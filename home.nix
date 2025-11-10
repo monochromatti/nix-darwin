@@ -106,6 +106,7 @@ in
       nix-direnv.enable = true;
       silent = true;
     };
+
     zed-editor = {
       enable = true;
       package = upkgs.zed-editor;
@@ -120,6 +121,7 @@ in
         "just"
         "rainbow-csv"
         "terraform"
+        "svelte"
       ];
       userSettings = {
         file_types = {
