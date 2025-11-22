@@ -1,6 +1,8 @@
 {
+  config,
   pkgs,
   upkgs,
+  inputs,
   ...
 }:
 with pkgs.lib;
@@ -8,7 +10,30 @@ let
   latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
 in
 {
+
+  imports = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
+
+  sops = {
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+    defaultSopsFile = ./secrets.yaml;
+    secrets.github-token = {
+      path = "${config.home.homeDirectory}/.config/github/token";
+    };
+  };
+
   home = {
+
+    sessionVariables = {
+      SOPS_AGE_KEY_FILE = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+    };
+
+    file.".netrc".text = ''
+      machine github.com
+      login monochromatti
+      password ${config.sops.secrets.github-token.path}
+    '';
 
     username = "monochromatti";
     stateVersion = "24.05";
@@ -20,6 +45,9 @@ in
       helix # Text editor
       silicon # Create images of your code
       yazi # File explorer
+
+      # Secrets
+      sops
 
       # Nix
       nixfmt-rfc-style # Formatter
