@@ -20,6 +20,7 @@
 
   environment.systemPackages = with pkgs; [
     mas # Mac App Store CLI
+    orbstack
   ];
 
   nix = {
