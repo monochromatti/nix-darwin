@@ -76,8 +76,13 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."monochromatti" =
-                { config, pkgs, ... }: import ./home.nix { inherit config pkgs upkgs; };
+              home-manager.users."monochromatti" = import ./home.nix;
+              home-manager.extraSpecialArgs = {
+                inherit
+                  upkgs
+                  inputs
+                  ;
+              };
             }
           ];
         };
