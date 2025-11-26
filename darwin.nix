@@ -55,7 +55,7 @@
       "transmission"
       "keka"
       "soundsource"
-      "mullvadvpn"
+      "mullvad-vpn"
       "visual-studio-code"
       "coteditor"
       "ghostty"
