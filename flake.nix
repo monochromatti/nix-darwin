@@ -2,12 +2,11 @@
   description = "Nix-darwin configuration for macarius/monochromatti";
 
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
-    };
-    nixpkgs-unstable = {
-      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,9 +15,8 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-    };
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -31,6 +29,7 @@
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,48 +39,43 @@
   outputs =
     inputs@{
       self,
+      flake-parts,
       nixpkgs,
       nixpkgs-unstable,
-      home-manager,
       nix-darwin,
+      home-manager,
       nix-homebrew,
-      homebrew-core,
-      homebrew-cask,
-      homebrew-bundle,
       ...
     }:
     let
       system = "aarch64-darwin";
+      upkgs = import nixpkgs-unstable { inherit system; };
       users = {
         monochromatti = {
           description = "Mattias Matthiesen";
           home = "/Users/monochromatti";
         };
       };
-      upkgs = import nixpkgs-unstable {
-        inherit system;
-      };
     in
-    {
-      darwinConfigurations = {
-        macarius = nix-darwin.lib.darwinSystem {
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ system ];
+
+      flake = {
+        darwinConfigurations.macarius = nix-darwin.lib.darwinSystem {
+          inherit system;
           specialArgs = {
-            inherit inputs users;
+            inherit inputs upkgs users;
           };
           modules = [
-            ./darwin.nix
-            ./homebrew.nix
+            ./hosts/macarius/darwin.nix
             nix-homebrew.darwinModules.nix-homebrew
             home-manager.darwinModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users."monochromatti" = import ./home.nix;
-              home-manager.extraSpecialArgs = {
-                inherit
-                  upkgs
-                  inputs
-                  ;
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.monochromatti = import ./hosts/macarius/home.nix;
+                extraSpecialArgs = { inherit upkgs inputs; };
               };
             }
           ];
