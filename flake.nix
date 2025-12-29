@@ -6,6 +6,7 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.05";
@@ -36,50 +37,6 @@
     };
   };
 
-  outputs =
-    inputs@{
-      self,
-      flake-parts,
-      nixpkgs,
-      nixpkgs-unstable,
-      nix-darwin,
-      home-manager,
-      nix-homebrew,
-      ...
-    }:
-    let
-      system = "aarch64-darwin";
-      upkgs = import nixpkgs-unstable { inherit system; };
-      users = {
-        monochromatti = {
-          description = "Mattias Matthiesen";
-          home = "/Users/monochromatti";
-        };
-      };
-    in
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ system ];
-
-      flake = {
-        darwinConfigurations.macarius = nix-darwin.lib.darwinSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs upkgs users;
-          };
-          modules = [
-            ./hosts/macarius/darwin.nix
-            nix-homebrew.darwinModules.nix-homebrew
-            home-manager.darwinModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.monochromatti = import ./hosts/macarius/home.nix;
-                extraSpecialArgs = { inherit upkgs inputs; };
-              };
-            }
-          ];
-        };
-      };
-    };
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

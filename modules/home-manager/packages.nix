@@ -1,45 +1,48 @@
-{ pkgs, ... }:
-let
-  latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
-in
+{ ... }:
 {
-  home.packages = with pkgs; [
-    # Terminal
-    tree
-    lazygit
-    helix
-    silicon
-    yazi
+  flake.modules.homeManager.packages = { pkgs, ... }:
+  let
+    latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
+  in
+  {
+    home.packages = with pkgs; [
+      # Terminal
+      tree
+      lazygit
+      helix
+      silicon
+      yazi
 
-    # Secrets
-    sops
+      # Secrets
+      sops
 
-    # Nix
-    nixfmt-rfc-style
-    nixpkgs-fmt
-    nixd
+      # Nix
+      nixfmt-rfc-style
+      nixpkgs-fmt
+      nixd
 
-    # Rust
-    rust-analyzer
-    cargo
+      # Rust
+      rust-analyzer
+      cargo
 
-    # Python
-    uv
-    ruff
+      # Python
+      uv
+      ruff
 
-    # Graphics
-    d2
+      # Graphics
+      d2
 
-    # Dev
-    gh
-    git
-    docker
-    azure-cli
-    qemu
+      # Dev
+      gh
+      git
+      docker
+      azure-cli
+      qemu
 
-    # Docs
-    pandoc
-    quarto
-    latex
-  ];
+      # Docs
+      pandoc
+      quarto
+      latex
+    ];
+  };
 }
