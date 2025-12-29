@@ -26,6 +26,8 @@
     };
   };
 
+  security.pam.services.sudo_local.touchIdAuth = true;
+
   programs.zsh.enable = true;
 
   fonts.packages = with pkgs; [
