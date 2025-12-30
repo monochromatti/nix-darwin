@@ -21,7 +21,6 @@ in
       darwin.base
       darwin.homebrew
       darwin.secrets
-      inputs.nix-homebrew.darwinModules.nix-homebrew
       inputs.home-manager.darwinModules.home-manager
       {
         system = {
