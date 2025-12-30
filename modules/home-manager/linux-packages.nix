@@ -1,41 +1,37 @@
 { ... }:
 {
   flake.modules.homeManager.linux-packages =
-    { pkgs, inputs, ... }:
+    { pkgs, ... }:
     {
-      home.packages =
-        (with pkgs; [
-          # Terminal
-          xclip
+      home.packages = with pkgs; [
+        # Terminal
+        xclip
 
-          # UI programs
-          spotify
-          bitwarden
-          kdePackages.okular
-          libreoffice
-          keymapp
+        # UI programs
+        spotify
+        bitwarden
+        kdePackages.okular
+        libreoffice
+        keymapp
 
-          # Text editors
-          obsidian
-          package-version-server
+        # Text editors
+        obsidian
+        package-version-server
 
-          # Graphics
-          inkscape
-          gimp
+        # Graphics
+        inkscape
+        gimp
 
-          # Docker
-          docker
-          docker-compose
+        # Docker
+        docker
+        docker-compose
 
-          # NATS
-          natscli
-          nsc
+        # NATS
+        natscli
+        nsc
 
-          # Other
-          gpu-screen-recorder
-        ])
-        ++ [
-          inputs.fornybar-ai-tools.packages.${pkgs.system}.default
-        ];
+        # Other
+        gpu-screen-recorder
+      ];
     };
 }

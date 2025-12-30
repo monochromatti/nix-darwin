@@ -9,6 +9,7 @@
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.05";
@@ -39,6 +40,5 @@
     };
   };
 
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

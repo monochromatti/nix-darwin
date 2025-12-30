@@ -1,5 +1,6 @@
 { pkgs }:
-with (pkgs.forVSCodeVersion pkgs.vscode.version).vscode-marketplace; [
+with (pkgs.forVSCodeVersion pkgs.vscode.version).vscode-marketplace;
+[
   mkhl.direnv
   tamasfe.even-better-toml
   yzhang.markdown-all-in-one

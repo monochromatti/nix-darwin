@@ -48,7 +48,6 @@ in
           config,
           pkgs,
           lib,
-          users,
           ...
         }:
         {
