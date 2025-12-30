@@ -1,7 +1,13 @@
 keys:
-  - &host_hostname age1fyhuku2w2x4t4f6fcc7vpa3vuep3vnjp2ujdsj9tw75wsgdcxepq47g767
+  - &macarius age1fyhuku2w2x4t4f6fcc7vpa3vuep3vnjp2ujdsj9tw75wsgdcxepq47g767
+  - &firefly age154adgvpzxf35mqrukqc2py3lpmy9tlaq5uj7ugd4a0uwlfqv7p7qqn9rry
+
 creation_rules:
-  - path_regex: secrets.yaml$
+  - path_regex: modules/darwin/secrets/secrets\.yaml$
     key_groups:
       - age:
-          - *host_hostname
+          - *macarius
+  - path_regex: ^secrets\.yaml$
+    key_groups:
+      - age:
+          - *firefly
