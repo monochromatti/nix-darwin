@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.flake-parts.flakeModules.modules
+    ./secrets
     ./hosts/macarius.nix
     ./hosts/firefly.nix
   ];

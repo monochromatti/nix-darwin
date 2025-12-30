@@ -22,7 +22,13 @@ in
     inherit system;
     specialArgs = {
       inherit inputs upkgs users;
-      inherit (inputs) nixos-hardware sops-nix home-manager pc utgard;
+      inherit (inputs)
+        nixos-hardware
+        sops-nix
+        home-manager
+        pc
+        utgard
+        ;
       self = inputs.self;
     };
     modules = [
@@ -33,10 +39,18 @@ in
       inputs.pc.nixosModules.docker
       inputs.utgard.nixosModules.aruba-onboard
 
+      modules.nixos.secrets
+
       inputs.home-manager.nixosModules.home-manager
 
       (
-        { config, pkgs, lib, users, ... }:
+        {
+          config,
+          pkgs,
+          lib,
+          users,
+          ...
+        }:
         {
           swapDevices = [ { label = "swap"; } ];
 
@@ -77,9 +91,6 @@ in
           ];
 
           nixpkgs.overlays = [ inputs.utgard.overlays.aruba-onboard ];
-
-          # Override pc module's sops keyFile to use user home directory
-          sops.age.keyFile = lib.mkForce "${users.monochromatti.home}/.config/sops/age/keys.txt";
 
           system.stateVersion = "24.05";
         }
