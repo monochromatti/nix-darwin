@@ -1,10 +1,10 @@
 {
   description = "Unified nix-darwin and NixOS configuration";
 
-  nixConfig.flake-registry = "https://raw.githubusercontent.com/fornybar/registry/nixos-25.05/registry.json";
+  nixConfig.flake-registry = "https://raw.githubusercontent.com/fornybar/registry/nixos-25.11/registry.json";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -12,11 +12,11 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
     nix-darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-25.05";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -26,7 +26,7 @@
 
     # NixOS-specific inputs
     pc = {
-      url = "github:fornybar/pc/9dbf61b0e32a49c09c244bb03cc2163b23007b4d";
+      url = "github:fornybar/pc";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -40,5 +40,7 @@
     };
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs =
+    inputs@{ flake-parts, import-tree, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (import-tree ./modules);
 }

@@ -1,9 +1,17 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.homeManager.zed =
-    { pkgs, upkgs, ... }:
+    { pkgs, ... }:
+    let
+      upkgs = import inputs.nixpkgs-unstable {
+        inherit (pkgs) system;
+        overlays = [ inputs.utgard.overlays.ty ];
+      };
+    in
     with pkgs.lib;
     {
+      home.packages = [ pkgs.package-version-server ];
+
       programs.zed-editor = {
         enable = true;
         package = upkgs.zed-editor;

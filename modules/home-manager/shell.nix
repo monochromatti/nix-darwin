@@ -3,8 +3,20 @@
   flake.modules.homeManager.shell =
     { pkgs, ... }:
     {
+
+      home.packages = with pkgs; [
+        tree
+        lazygit
+        yazi
+      ];
+
       programs = {
         home-manager.enable = true;
+
+        starship = {
+          enable = true;
+          enableZshIntegration = true;
+        };
 
         zoxide = {
           enable = true;

@@ -1,22 +1,12 @@
-{ ... }:
-{
-  flake.modules.homeManager.packages =
-    { pkgs, inputs, ... }:
+{ inputs, ... }:
+let
+  commonPackages =
+    { pkgs, ... }:
     let
       latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
     in
     {
       home.packages = with pkgs; [
-        # Terminal
-        tree
-        lazygit
-        helix
-        silicon
-        yazi
-
-        # Secrets
-        sops
-
         # Nix
         nixfmt-rfc-style
         nixpkgs-fmt
@@ -32,6 +22,7 @@
 
         # Graphics
         d2
+        silicon
 
         # Dev
         gh
@@ -48,4 +39,44 @@
         inputs.fornybar-ai-tools.packages.${pkgs.system}.default
       ];
     };
+
+  linuxPackages =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        # Terminal
+        xclip
+
+        # UI programs
+        spotify
+        bitwarden-desktop
+        kdePackages.okular
+        libreoffice
+        keymapp
+
+        # Text editors
+        obsidian
+
+        # Graphics
+        inkscape
+        gimp
+
+        # Docker
+        docker-compose
+
+        # NATS
+        natscli
+        nsc
+
+        # Other
+        gpu-screen-recorder
+      ];
+    };
+in
+{
+  flake.modules.homeManager.packages = commonPackages;
+
+  flake.modules.nixos.packages = {
+    home-manager.sharedModules = [ linuxPackages ];
+  };
 }

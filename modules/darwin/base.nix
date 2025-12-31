@@ -1,14 +1,21 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.darwin.base =
     { pkgs, ... }:
     {
+      imports = [
+        inputs.home-manager.darwinModules.home-manager
+        inputs.sops-nix.darwinModules.sops
+      ];
+
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+      };
+
       ids.gids.nixbld = 30000;
 
-      nixpkgs = {
-        hostPlatform = "aarch64-darwin";
-        config.allowUnfree = true;
-      };
+      nixpkgs.config.allowUnfree = true;
 
       environment.systemPackages = with pkgs; [
         mas
@@ -30,8 +37,6 @@
       };
 
       security.pam.services.sudo_local.touchIdAuth = true;
-
-      programs.zsh.enable = true;
 
       fonts.packages = with pkgs; [
         dejavu_fonts

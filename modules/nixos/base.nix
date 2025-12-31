@@ -1,9 +1,20 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.nixos.base =
     { pkgs, lib, ... }:
     with lib;
     {
+      imports = [
+        inputs.home-manager.nixosModules.home-manager
+        inputs.sops-nix.nixosModules.sops
+      ];
+
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        backupFileExtension = "backup";
+      };
+
       i18n.defaultLocale = mkDefault "en_US.UTF-8";
 
       nix = {
