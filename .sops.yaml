@@ -1,10 +1,9 @@
 keys:
+  - &firefly age1czup90hyce5dpz65satqqlxfkcp5cj35u0vs5hwjgy555a99cg6s2ss5vv
   - &macarius age1fyhuku2w2x4t4f6fcc7vpa3vuep3vnjp2ujdsj9tw75wsgdcxepq47g767
-  - &firefly age154adgvpzxf35mqrukqc2py3lpmy9tlaq5uj7ugd4a0uwlfqv7p7qqn9rry
-
 creation_rules:
   - path_regex: modules/secrets/secrets\.yaml$
     key_groups:
       - age:
-          - *macarius
           - *firefly
+          - *macarius

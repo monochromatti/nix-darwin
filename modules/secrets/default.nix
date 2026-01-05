@@ -19,7 +19,12 @@ let
     {
       config = {
         home-manager.sharedModules = [
-          { home.packages = [ pkgs.sops ]; }
+          {
+            home.packages = [ pkgs.sops ];
+            home.sessionVariables = {
+              SOPS_AGE_KEY_FILE = "${userHome}/.config/sops/age/keys.txt";
+            };
+          }
         ];
 
         sops = {
@@ -30,7 +35,7 @@ let
 
           templates."nix-access-tokens" = {
             content = ''
-              access-tokens = github.com=${config.sops.placeholder."monochromatti/github-token"}
+              access-tokens = github.com=${config.sops.placeholder.github-token}
             '';
             path = nixAccessTokensPath;
             owner = "root";
