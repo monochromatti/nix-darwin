@@ -64,9 +64,14 @@
       '';
 
       sops.secrets = {
-        "monochromatti/github-token" = { };
-        "monochromatti/password".neededForUsers = true;
         nixbuild-ssh = { };
+        github-token = {
+          key = "monochromatti/github-token";
+        };
+        password = {
+          neededForUsers = true;
+          key = "monochromatti/password";
+        };
       };
 
       system.stateVersion = "24.05";

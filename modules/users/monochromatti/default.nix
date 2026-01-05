@@ -23,22 +23,11 @@ in
   };
 
   flake.modules.nixos.${username} =
-    { pkgs, ... }:
+    { ... }:
     {
       home-manager.sharedModules = [
         inputs.self.modules.homeManager.${username}
       ];
-
-      users.users.${username} = {
-        isNormalUser = true;
-        description = users.${username}.description;
-        home = users.${username}.home.linux;
-        extraGroups = [
-          "wheel"
-          "docker"
-        ];
-        shell = pkgs.zsh;
-      };
 
       home-manager.users.${username} = {
         home = {

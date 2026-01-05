@@ -11,7 +11,9 @@
       monochromatti
     ];
 
-    sops.secrets.github-token = { };
+    sops.secrets.github-token = {
+      key = "monochromatti/github-token";
+    };
 
     system.stateVersion = 5;
   };
