@@ -45,6 +45,7 @@ let
     {
       home.packages = with pkgs; [
         # Terminal
+        ghostty
         xclip
 
         # UI programs
