@@ -4,7 +4,7 @@
     { pkgs, ... }:
     let
       upkgs = import inputs.nixpkgs-unstable {
-        inherit (pkgs) system;
+        system = pkgs.stdenv.hostPlatform.system;
         overlays = [ inputs.utgard.overlays.ty ];
       };
     in

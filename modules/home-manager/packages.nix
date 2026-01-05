@@ -36,7 +36,7 @@ let
         quarto
         latex
 
-        inputs.fornybar-ai-tools.packages.${pkgs.system}.default
+        inputs.fornybar-ai-tools.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
 
