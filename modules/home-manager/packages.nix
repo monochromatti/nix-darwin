@@ -18,6 +18,7 @@ let
 
         # Python
         uv
+        ty
         ruff
 
         # Graphics
