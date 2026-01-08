@@ -30,7 +30,10 @@
         keyboard.zsa.enable = true;
       };
 
-      nixpkgs.overlays = [ inputs.utgard.overlays.aruba-onboard ];
+      nixpkgs.overlays = [
+        inputs.utgard.overlays.aruba-onboard
+        inputs.utgard.overlays.ty
+      ];
 
       environment.gnome.excludePackages = with pkgs; [
         gnome-weather
