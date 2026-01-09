@@ -10,7 +10,10 @@
     in
     with pkgs.lib;
     {
-      home.packages = [ pkgs.package-version-server ];
+      home.packages = with pkgs; [
+        package-version-server
+        just
+      ];
 
       programs.zed-editor = {
         enable = true;
@@ -27,6 +30,7 @@
           "rainbow-csv"
           "terraform"
           "svelte"
+          "just"
         ];
         userSettings = {
           file_types = {
