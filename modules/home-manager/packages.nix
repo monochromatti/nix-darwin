@@ -1,12 +1,14 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 let
   commonPackages =
     { pkgs, ... }:
     let
       latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
+      daily-hours = self.packages.${pkgs.stdenv.hostPlatform.system}.daily-hours;
     in
     {
       home.packages = with pkgs; [
+        daily-hours
         # Nix
         nixfmt-rfc-style
         nixpkgs-fmt
