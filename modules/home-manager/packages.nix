@@ -5,38 +5,42 @@ let
     let
       latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
       daily-hours = self.packages.${pkgs.stdenv.hostPlatform.system}.daily-hours;
+      upkgs = import inputs.nixpkgs-unstable {
+        system = pkgs.stdenv.hostPlatform.system;
+      };
     in
     {
-      home.packages = with pkgs; [
+      home.packages = [
         daily-hours
+
         # Nix
-        nixfmt-rfc-style
-        nixpkgs-fmt
-        nixd
+        pkgs.nixfmt-rfc-style
+        pkgs.nixpkgs-fmt
+        pkgs.nixd
 
         # Rust
-        rust-analyzer
-        cargo
+        pkgs.rust-analyzer
+        pkgs.cargo
 
         # Python
-        uv
-        ty
-        ruff
+        upkgs.uv
+        upkgs.ty
+        upkgs.ruff
 
         # Graphics
-        d2
-        silicon
+        pkgs.d2
+        pkgs.silicon
 
         # Dev
-        gh
-        git
-        docker
-        azure-cli
-        qemu
+        pkgs.gh
+        pkgs.git
+        pkgs.docker
+        pkgs.azure-cli
+        pkgs.qemu
 
         # Docs
-        pandoc
-        quarto
+        pkgs.pandoc
+        pkgs.quarto
         latex
 
         inputs.fornybar-ai-tools.packages.${pkgs.stdenv.hostPlatform.system}.default
