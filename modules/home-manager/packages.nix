@@ -38,6 +38,9 @@ let
         pkgs.azure-cli
         pkgs.qemu
 
+        # Shell
+        pkgs.eza
+
         # Docs
         pkgs.pandoc
         pkgs.quarto
