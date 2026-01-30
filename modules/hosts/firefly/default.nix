@@ -77,6 +77,11 @@
         };
       };
 
+      programs.nix-ld.enable = true;
+      programs.nix-ld.libraries = with pkgs; [
+        stdenv.cc.cc.lib
+      ];
+
       system.stateVersion = "24.05";
     };
 }
