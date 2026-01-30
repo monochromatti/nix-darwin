@@ -27,6 +27,9 @@ let
         upkgs.ty
         upkgs.ruff
 
+        # JavaScript
+        upkgs.nodejs_24
+
         # Graphics
         pkgs.d2
         pkgs.silicon
