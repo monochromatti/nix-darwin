@@ -77,10 +77,19 @@
         };
       };
 
-      programs.nix-ld.enable = true;
-      programs.nix-ld.libraries = with pkgs; [
-        stdenv.cc.cc.lib
-      ];
+      programs = {
+        nix-ld = {
+          enable = true;
+          libraries = with pkgs; [
+            stdenv.cc.cc.lib
+          ];
+        };
+        niri.enable = true;
+      };
+
+      home-manager.users.monochromatti = {
+        programs.fuzzel.enable = true;
+      };
 
       system.stateVersion = "24.05";
     };
